@@ -20,8 +20,10 @@
     "autoprefixer": "^10.4.20",
     "bits-ui": "^0.21.16",
     "clsx": "^2.1.1",
+    "paneforge": "^0.0.6",
     "svelte": "^4.2.7",
     "svelte-check": "^4.0.0",
+    "svelte-radix": "^1.1.1",
     "tailwind-merge": "^2.5.3",
     "tailwind-variants": "^0.2.1",
     "tailwindcss": "^3.4.9",
@@ -32,6 +34,7 @@
   "dependencies": {
     "@sveltejs/adapter-static": "^3.0.5",
     "install": "^0.13.0",
-    "lucide-svelte": "^0.452.0"
+    "lucide-svelte": "^0.452.0",
+    "svelte-legos": "^0.2.5"
   }
 }
