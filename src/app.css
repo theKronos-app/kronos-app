@@ -61,6 +61,10 @@
 		@apply bg-background text-foreground;
 
 	}
+
+  ul, ol {
+    list-style: revert;
+  }
 }
 
 /* poppins-latin-300-italic */
