@@ -5,9 +5,20 @@ import * as fs from "@tauri-apps/plugin-fs";
 
 import * as path from "@tauri-apps/api/path";
 import { writable } from "svelte/store";
-import { appState } from "$lib/stores/vault";
+import { appState, updateVaultPath } from "$lib/stores/vault";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardFooter,
+	CardHeader,
+	CardTitle,
+} from "$lib/components/ui/card";
+import { Button } from "$lib/components/ui/button";
+import { FolderOpen } from "lucide-svelte";
 
 let isSetup = false;
+const isLoading = false;
 
 $: vaultPath = $appState.vaultPath;
 
@@ -17,7 +28,7 @@ onMount(async () => {
 		const configPath = await path.join(appDataDir, "kronos_config.json");
 		const config = await fs.readTextFile(configPath);
 		const parsedConfig = JSON.parse(config);
-		vaultPath.set(parsedConfig.vaultPath);
+		updateVaultPath(parsedConfig.vaultPath);
 		isSetup = true;
 	} catch (error) {
 		console.log("No existing configuration found");
@@ -35,8 +46,7 @@ async function selectVaultLocation() {
 		if (selected) {
 			const vaultDir = await path.join(selected as string, "kronos");
 			await fs.mkdir(vaultDir, { recursive: true });
-			vaultPath.set(vaultDir);
-
+			updateVaultPath(vaultDir);
 			const appDataDir = await path.appDataDir();
 			const configPath = await path.join(appDataDir, "kronos_config.json");
 			await fs.writeTextFile(
@@ -52,15 +62,35 @@ async function selectVaultLocation() {
 </script>
 
 {#if !isSetup}
-  <div class="flex flex-col items-center justify-center h-full">
-    <h1 class="text-2xl font-bold mb-4">Welcome to Kronos</h1>
-    <p class="mb-4">Please select a location for your vault:</p>
-    <button
-      class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-      on:click={selectVaultLocation}
-    >
-      Select Vault Location
-    </button>
+  <div class="flex items-center justify-center min-h-screen bg-background">
+    <Card class="w-[350px]">
+      <CardHeader>
+        <CardTitle class="text-2xl font-bold">Welcome to Kronos</CardTitle>
+        <CardDescription>
+          Choose a location for your vault to get started.
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <p class="text-sm text-muted-foreground mb-4">
+          Your vault is where all your notes and tasks will be stored securely on your device.
+        </p>
+      </CardContent>
+      <CardFooter>
+        <Button 
+          on:click={selectVaultLocation} 
+          class="w-full" 
+          variant="default"
+          disabled={isLoading}
+        >
+          {#if isLoading}
+            <span class="mr-2">Setting up...</span>
+          {:else}
+            <FolderOpen class="mr-2 h-4 w-4" />
+            <span>Select Vault Location</span>
+          {/if}
+        </Button>
+      </CardFooter>
+    </Card>
   </div>
 {:else}
   <slot />

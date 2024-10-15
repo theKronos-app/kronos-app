@@ -24,7 +24,7 @@ function toggle_sidebar() {
 }
 </script>
 
-<!-- <VaultSetup> -->
+<VaultSetup>
   <div class="flex flex-col h-screen overflow-hidden">
     <Header on:toggleSidebar={toggle_sidebar} {sidebar} />
     <Resizable.PaneGroup direction="horizontal" class="h-[calc(100vh-3.5rem)]">
@@ -65,7 +65,7 @@ function toggle_sidebar() {
       </Resizable.Pane>
     </Resizable.PaneGroup>
   </div>
-<!-- </VaultSetup> -->
+</VaultSetup>
 
 <style>
   :global(body) {
