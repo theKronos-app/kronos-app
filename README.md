@@ -16,7 +16,7 @@ Kronos is an open-source note-taking and task management application designed to
 
 ## License
 
-This project is licensed under the AGPL License - see the [LICENSE.md](LICENSE.md) file for details.
+This project is licensed under the AGPL License - see the [LICENSE](LICENSE) file for details.
 
 ## Contact
 
