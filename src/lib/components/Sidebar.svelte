@@ -3,6 +3,7 @@
   import { Button, type Variant } from "$lib/components/ui/button/index.js";
   import * as Tooltip from "$lib/components/ui/tooltip/index.js";
   import type { Writable } from "svelte/store";
+  import VaultSwitcher from "./VaultSwitcher.svelte";
 
   export let isCollapsed: Writable<boolean>;
   type Link = {
@@ -23,7 +24,7 @@
 </script>
 
 <aside
-  class="h-full bg-muted/40 overflow-y-auto py-4"
+  class="h-full bg-muted/40 overflow-y-auto py-4 relative"
   data-collapsed={$isCollapsed}
 >
   <nav
@@ -59,5 +60,21 @@
 
   <div class="my-4 mx-4">
     <hr class="border-t border-muted-foreground/20" />
+  </div>
+
+  <div class="mt-auto px-3 absolute w-full bottom-0 pb-4">
+    {#if !$isCollapsed}
+      <VaultSwitcher />
+    {:else}
+      <Tooltip.Root>
+        <Tooltip.Trigger asChild>
+          <Button variant="outline" size="icon" class="h-9 w-9">
+            <Archive class="h-4 w-4" />
+            <span class="sr-only">Switch Vault</span>
+          </Button>
+        </Tooltip.Trigger>
+        <Tooltip.Content side="right">Switch Vault</Tooltip.Content>
+      </Tooltip.Root>
+    {/if}
   </div>
 </aside>

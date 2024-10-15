@@ -2,10 +2,8 @@
 import { onMount } from "svelte";
 import * as dialog from "@tauri-apps/plugin-dialog";
 import * as fs from "@tauri-apps/plugin-fs";
-
 import * as path from "@tauri-apps/api/path";
-import { writable } from "svelte/store";
-import { appState, updateVaultPath } from "$lib/stores/vault";
+import { appState, addVault, initializeStore } from "$lib/stores/vault";
 import {
 	Card,
 	CardContent,
@@ -15,27 +13,30 @@ import {
 	CardTitle,
 } from "$lib/components/ui/card";
 import { Button } from "$lib/components/ui/button";
+import { Input } from "$lib/components/ui/input";
 import { FolderOpen } from "lucide-svelte";
 
-let isSetup = false;
-const isLoading = false;
-
-$: vaultPath = $appState.vaultPath;
+let isLoading = false;
+let vaultName = "";
+let showSetup = true;
 
 onMount(async () => {
-	try {
-		const appDataDir = await path.appDataDir();
-		const configPath = await path.join(appDataDir, "kronos_config.json");
-		const config = await fs.readTextFile(configPath);
-		const parsedConfig = JSON.parse(config);
-		updateVaultPath(parsedConfig.vaultPath);
-		isSetup = true;
-	} catch (error) {
-		console.log("No existing configuration found");
+	const initialState = await initializeStore();
+	if (initialState.vaults && initialState.vaults.length > 0) {
+		showSetup = false;
 	}
 });
 
 async function selectVaultLocation() {
+	if (!vaultName.trim()) {
+		await dialog.message("Please enter a vault name.", {
+			title: "Error",
+			type: "error",
+		});
+		return;
+	}
+
+	isLoading = true;
 	try {
 		const selected = await dialog.open({
 			directory: true,
@@ -44,36 +45,43 @@ async function selectVaultLocation() {
 		});
 
 		if (selected) {
-			const vaultDir = await path.join(selected as string, "kronos");
+			const vaultDir = await path.join(selected as string, vaultName);
 			await fs.mkdir(vaultDir, { recursive: true });
-			updateVaultPath(vaultDir);
-			const appDataDir = await path.appDataDir();
-			const configPath = await path.join(appDataDir, "kronos_config.json");
-			await fs.writeTextFile(
-				configPath,
-				JSON.stringify({ vaultPath: vaultDir }),
-			);
-			isSetup = true;
+			const newVault = {
+				id: crypto.randomUUID(),
+				name: vaultName,
+				path: vaultDir,
+			};
+			await addVault(newVault);
+			showSetup = false;
 		}
 	} catch (error) {
-		console.error("Error selecting vault location:", error);
+		await dialog.message("Error creating vault. Please try again.", {
+			title: "Error",
+			type: "error",
+		});
+	} finally {
+		isLoading = false;
 	}
 }
 </script>
 
-{#if !isSetup}
+{#if showSetup}
   <div class="flex items-center justify-center min-h-screen bg-background">
     <Card class="w-[350px]">
       <CardHeader>
         <CardTitle class="text-2xl font-bold">Welcome to Kronos</CardTitle>
         <CardDescription>
-          Choose a location for your vault to get started.
+          Set up your first vault to get started.
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <p class="text-sm text-muted-foreground mb-4">
-          Your vault is where all your notes and tasks will be stored securely on your device.
-        </p>
+        <form on:submit|preventDefault={selectVaultLocation} class="space-y-4">
+          <div class="space-y-2">
+            <label for="vault-name" class="text-sm font-medium">Vault Name</label>
+            <Input id="vault-name" bind:value={vaultName} placeholder="My Vault" required />
+          </div>
+        </form>
       </CardContent>
       <CardFooter>
         <Button 
@@ -86,7 +94,7 @@ async function selectVaultLocation() {
             <span class="mr-2">Setting up...</span>
           {:else}
             <FolderOpen class="mr-2 h-4 w-4" />
-            <span>Select Vault Location</span>
+            <span>Create Vault</span>
           {/if}
         </Button>
       </CardFooter>
