@@ -1,38 +1,27 @@
-# create-svelte
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+# Kronos
 
-## Creating a project
+Kronos is an open-source note-taking and task management application designed to combine the best features of existing tools while providing a more opinionated and structured approach. It aims to reduce distractions and offer a gentle learning curve for users seeking an efficient personal knowledge management system.
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Features
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+- **Journal Functionality**: Easily maintain a digital journal for your thoughts and reflections.
+- **Task Management**: Organize and track your tasks efficiently.
+- **Calendar Integration**: Seamlessly integrate with your existing calendar for better time management.
+- **AI-Powered Scheduling**: Leverage AI to optimize your schedule and study plans.
+- **Privacy-Focused**: Your data stays on your device, ensuring maximum privacy and security.
+- **Open Source**: Benefit from community contributions and customize the app to your needs.
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+**Note:** All features mentioned above are currently work in progress and under active development.
 
-## Developing
+## License
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+This project is licensed under the AGPL License - see the [LICENSE.md](LICENSE.md) file for details.
 
-```bash
-npm run dev
+## Contact
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+Omar S. Goubail - [@OgAreMaInitials](https://x.com/OgAreMaInitials) - <omars.goubail@goubail.com>
 
-## Building
+Project Link: <https://github.com/theKronos-app/kronos-app>
 
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+Kronos is still in active development. We appreciate your interest and patience as we work to create a powerful, user-friendly personal knowledge management tool.
