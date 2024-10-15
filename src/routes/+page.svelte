@@ -1,1 +1,1 @@
-<div>Hello World</div>
+<div class="font-sans font-black">Hello World</div>

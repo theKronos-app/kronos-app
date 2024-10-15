@@ -58,15 +58,11 @@
     <Resizable.Handle />
     <Resizable.Pane>
       <main class="h-full p-6 overflow-auto">
-        <h1 class="text-2xl font-bold mb-4">Welcome to Kronos</h1>
-        {is_mobile}
-        <p>Your minimal note-taking and task management app.</p>
+        <slot />
       </main>
     </Resizable.Pane>
   </Resizable.PaneGroup>
 </div>
-
-<slot></slot>
 
 <style>
   :global(body) {

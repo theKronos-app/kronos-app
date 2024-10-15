@@ -32,7 +32,9 @@
   },
   "type": "module",
   "dependencies": {
+    "@fontsource/poppins": "^5.1.0",
     "@sveltejs/adapter-static": "^3.0.5",
+    "@tauri-apps/api": ">=2.0.0",
     "install": "^0.13.0",
     "lucide-svelte": "^0.452.0",
     "svelte-legos": "^0.2.5"
